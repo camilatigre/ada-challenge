@@ -23,5 +23,16 @@ export const defaultTheme = createTheme({
                 }),
             },
         },
-    },
+        MuiIconButton: {
+            styleOverrides: {
+                root: ({ ownerState }) => ({
+                    ...(ownerState.color === 'primary' && {
+                        '&:hover': {
+                            color: lightGreen['A700'],
+                        },
+                    }),
+                }),
+            },
+        }
+    }
 });
