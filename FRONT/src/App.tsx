@@ -15,10 +15,10 @@ const App = () => {
 
   useEffect(() => {
     const fetchToken = async () => {
-      const response = await login({ login: "letscode", senha: "lets@123" });
-      console.log(response)
-      setToken(response);
-      localStorage.setItem('token', response);
+      const token = await login({ login: "letscode", senha: "lets@123" });
+
+      setToken(token);
+      localStorage.setItem('token', token);
     };
 
     fetchToken();

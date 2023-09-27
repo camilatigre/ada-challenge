@@ -2,13 +2,7 @@ type CardUnitProps = {
     id: number,
     title: string,
     content: string,
-    status: ColumnStatus
-}
-
-type ColumnStatus = {
-    todo: string,
-    doing: string,
-    done: string
+    status: string
 }
 
 type BoardItems = {
@@ -25,5 +19,4 @@ export type {
     LoginCredentials,
     CardUnitProps,
     BoardItems,
-    ColumnStatus
 }
