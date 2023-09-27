@@ -8,3 +8,7 @@ Material UI with styled-components
 
 `yarn install`
 `yarn run dev`
+
+Não foi possível finalizar todas as funcionalidades, acredito que mais uma questão de tempo que dificuldade técnica.
+
+Melhorias: O token poderia ser salvo em cookies, teste unitários poderiam ser adicionados
