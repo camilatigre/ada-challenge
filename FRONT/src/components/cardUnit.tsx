@@ -1,9 +1,16 @@
 
 
 import { Typography, Paper, Grid, IconButton, Box } from '@mui/material';
-import { ArrowCircleLeftOutlined, Edit, DeleteForeverOutlined, ArrowCircleRightOutlined } from '@mui/icons-material';
+import {
+    ArrowCircleLeftOutlined,
+    Edit,
+    DeleteForeverOutlined,
+    ArrowCircleRightOutlined
+} from '@mui/icons-material';
 
-import { FC } from 'react';
+import { FC } from 'react'
+import Markdown from 'react-markdown'
+import remarkGfm from "remark-gfm";
 
 export const CardUnit = ({
     id,
@@ -40,7 +47,7 @@ export const CardUnit = ({
             </Grid>
             <Grid container xs={12}>
                 <Typography sx={{ fontSize: 12, fontWeight: 'bold' }} paragraph>
-                    {content}
+                    <Markdown remarkPlugins={[remarkGfm]}>{content}</Markdown>
                 </Typography>
             </Grid>
             <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
