@@ -3,23 +3,21 @@ import { Header } from './components/header'
 import { Board } from './components/board'
 import { login, getCards } from './api/routes';
 import { useState, useEffect } from 'react';
-import { BoardItems } from './types';
 import { appendCardsToColumn } from './utils';
+import { useStore } from './store';
 
 const App = () => {
-  const [token, setToken] = useState<string | null>(null);
+  // const [token, setToken] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);
-  const [boardData, setBoardData] = useState<Array<BoardItems> | null>([
-    { columnName: 'ToDo', title: 'TO DO', cards: [] },
-    { columnName: 'Doing', title: 'DOING', cards: [] },
-    { columnName: 'Done', title: 'DONE', cards: [] }
-  ])
+  const store = useStore();
+  const boardData = store.getBoardData();
+  const token = store.getToken();
 
   useEffect(() => {
     const fetchToken = async () => {
       const token = await login({ login: "letscode", senha: "lets@123" });
 
-      setToken(token);
+      store.setToken(token);
       localStorage.setItem("token", token);
     };
 
@@ -34,7 +32,7 @@ const App = () => {
 
       const updatedBoardData = appendCardsToColumn(cards, boardData)
 
-      setBoardData(updatedBoardData);
+      store.setBoardData(updatedBoardData);
       setIsLoading(false);
     }
   };
@@ -52,12 +50,21 @@ const App = () => {
     </>
   }
 
+  if (isLoading || !boardData) {
+    return <>
+      <Grid container>
+        <Header showButton={false} />
+        <Grid item sx={{ m: 4 }} width={300} alignContent={"center"}>{'Carregando...'}</Grid>
+      </Grid>
+    </>
+  }
+
 
   return (
     <>
       <Grid container>
         <Header />
-        {isLoading ? <div>Carregando...</div> : <Board data={boardData} />}
+        <Board data={boardData} />
       </Grid>
     </>
   )

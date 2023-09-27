@@ -9,20 +9,28 @@ import {
 } from '@mui/icons-material';
 import Markdown from 'react-markdown'
 import remarkGfm from "remark-gfm";
+import { useStore } from '../store';
+const store = useStore()
+const boardData = store.getBoardData()
+const token = store.getToken()
 
-const handleCardActions = ({
-    status,
-    column,
-    id,
-    action
-}: {
-    status: string,
-    column: string,
-    id: string,
-    action: string
-}) => {
 
-    console.log(status, id, column, action)
+const moveCard = async () => {
+    if (token) {
+
+        const cards = await updateCard({ token });
+    }
+};
+
+
+const moveToRight = (status, column, id, boardData) => {
+
+    for (let index = 0; index < boardData.length; index++) {
+        if (boardData[index].columnName === column) {
+            const cardSelected = boardData[index].cards.find(card => card.id === id)
+
+        }
+    }
 }
 
 export const CardUnit = ({
@@ -38,6 +46,7 @@ export const CardUnit = ({
     status: string,
     column: string
 }) => {
+
     return (
         <Paper key={id} elevation={1} square={false} sx={{ padding: 2, my: 2 }}>
             <Grid container spacing={2}>
@@ -47,7 +56,7 @@ export const CardUnit = ({
                     </Typography>
                 </Grid>
                 <Grid item xs={2} sx={{ mb: 1 }}>
-                    <IconButton color="primary" size="small" onClick={() => handleCardActions({ status, column, id, action: 'edit' })}>
+                    <IconButton color="primary" size="small" onClick={() => handleCardActions({ status, column, id, boardData, action: 'edit' })}>
                         <Edit />
                     </IconButton>
                 </Grid>
@@ -58,15 +67,15 @@ export const CardUnit = ({
                 </Typography>
             </Grid>
             <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
-                <IconButton color="primary" size="small" onClick={() => handleCardActions({ status, column, id, action: 'moveLeft' })} disabled={column === 'ToDo'}>
+                <IconButton color="primary" size="small" onClick={() => handleCardActions({ status, column, id, boardData, action: 'moveLeft' })} disabled={column === 'ToDo'}>
                     <ArrowCircleLeftOutlined />
                 </IconButton>
 
-                <IconButton color="primary" size="small" onClick={() => handleCardActions({ status, column, id, action: 'delete' })}>
+                <IconButton color="primary" size="small" onClick={() => handleCardActions({ status, column, id, boardData, action: 'delete' })}>
                     <DeleteForeverOutlined />
                 </IconButton>
 
-                <IconButton color="primary" size="small" onClick={() => handleCardActions({ status, column, id, action: 'moveRight' })} disabled={status === 'Done'}>
+                <IconButton color="primary" size="small" onClick={() => moveToRight({ status, column, id, boardData })} disabled={status === 'Done'}>
                     <ArrowCircleRightOutlined />
                 </IconButton>
             </Box>
