@@ -16,7 +16,13 @@ type BoardItems = {
     cards: Array<CardUnitProps>
 }
 
+interface LoginCredentials {
+    login: string;
+    senha: string;
+}
+
 export type {
+    LoginCredentials,
     CardUnitProps,
     BoardItems,
     ColumnStatus
