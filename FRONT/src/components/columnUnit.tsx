@@ -3,12 +3,13 @@ import { grey } from '@mui/material/colors';
 import { CardUnitProps } from '../types';
 import CardUnit from './cardUnit';
 
-const onFunc = () => 'teste'
 
 export const ColumnUnit = ({
+    columnName,
     title,
-    cards
+    cards,
 }: {
+    columnName: string,
     title: string,
     cards: Array<CardUnitProps>
 }) => {
@@ -21,16 +22,13 @@ export const ColumnUnit = ({
                 my: 2
             }}>
                 <Typography variant="h6">{title}</Typography>
-                {cards ? cards.map(item =>
+                {cards ? cards.map((item) =>
                     <CardUnit
                         id={item.id}
-                        title={item.title}
-                        content={item.content}
-                        status={item.status}
-                        onEdit={onFunc}
-                        onDelete={onFunc}
-                        moveLeft={onFunc}
-                        moveRight={onFunc}
+                        title={item.titulo}
+                        content={item.conteudo}
+                        status={item.lista}
+                        column={columnName}
                     />
                 ) : ''}
             </Box>

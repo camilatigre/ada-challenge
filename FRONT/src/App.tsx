@@ -1,28 +1,47 @@
 import { Grid } from '@mui/material';
 import { Header } from './components/header'
 import { Board } from './components/board'
-import { login } from './api/routes';
+import { login, getCards } from './api/routes';
 import { useState, useEffect } from 'react';
+import { BoardItems } from './types';
+import { appendCardsToColumn } from './utils';
 
-
-const data = [
-  { title: 'TO DO', cards: [{ id: 1, title: 'primeiro card a ser feito', content: 'conteudo generico', status: 'todo' }] },
-  { title: 'DOING', cards: [{ id: 2, title: 'melhorar codigo', content: 'conteudo generico', status: 'doing' }, { id: 3, title: 'card de melhoria 2', content: 'conteudo com *markdown*', status: 'doing' }] },
-  { title: 'DONE', cards: [{ id: 4, title: 'fazer deploy', content: 'passo a passo de deploy', status: 'done' }] }
-]
 const App = () => {
   const [token, setToken] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [boardData, setBoardData] = useState<Array<BoardItems> | null>([
+    { columnName: 'ToDo', title: 'TO DO', cards: [] },
+    { columnName: 'Doing', title: 'DOING', cards: [] },
+    { columnName: 'Done', title: 'DONE', cards: [] }
+  ])
 
   useEffect(() => {
     const fetchToken = async () => {
       const token = await login({ login: "letscode", senha: "lets@123" });
 
       setToken(token);
-      localStorage.setItem('token', token);
+      localStorage.setItem("token", token);
     };
 
     fetchToken();
   }, []);
+
+  const fetchCards = async () => {
+    if (token) {
+      setIsLoading(true);
+
+      const cards = await getCards({ token });
+
+      const updatedBoardData = appendCardsToColumn(cards, boardData)
+
+      setBoardData(updatedBoardData);
+      setIsLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchCards();
+  }, [token]);
 
   if (!token || !localStorage.getItem('token')) {
     return <>
@@ -38,7 +57,7 @@ const App = () => {
     <>
       <Grid container>
         <Header />
-        <Board data={data} />
+        {isLoading ? <div>Carregando...</div> : <Board data={boardData} />}
       </Grid>
     </>
   )
